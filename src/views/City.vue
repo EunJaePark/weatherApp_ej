@@ -1,37 +1,46 @@
 <template>
   <div 
-    class="city"
+    class="city clear"
     
   ><!-- @cityname = "newCity" -->
-    <p>나라이름: <span>{{ city.name }}</span></p>
+    <div class="mainWeather">
+      <h1 class="cityname">{{ city.name }}</h1>
+      <span class="date">Sunday 30 April</span>
 
-    <div v-if="tempInfo">
-      <p>평균 기온: <span>{{ temp }} ℃</span></p>
-      <p>최고 기온: <span>{{ maxTemp }} ℃</span></p>
-      <p>최저 기온: <span>{{ minTemp  }} ℃</span></p>     
-      <p>습도: <span>{{ tempInfo.humidity }} %</span></p>     
-    </div>
+      <div v-if="weather" class="clear">
+        <div class="iconBox">
+          <img v-bind:src="`http://openweathermap.org/img/wn/${weather[0].icon}@2x.png`" />
+        </div>
+        <div class="textBox">
+          <span class="temp">{{ temp }}℃</span> <!--평균기온-->
+          <span v-for="item in weather" class="weatherText">{{ item.main }}.  </span> <!--날씨-->
+        </div>
+      </div>
+    </div><!--.mainWeather-->
 
-    <div v-if="weather" >
-      <p>날씨: <span v-for="item in weather">{{ item.main }}.  </span></p>
-      <img v-bind:src="`http://openweathermap.org/img/wn/${weather[0].icon}@2x.png`" />
-    </div>
+    <div class="weatherInfo">
+      <div v-if="tempInfo">
+        <span>{{ maxTemp }}℃<span>Heigh</span></span> <!--최고 기온-->
+        <span>{{ minTemp  }}℃<span>Low</span></span>  <!--최저 기온-->    
+        <span>{{ tempInfo.humidity }}%<span>Humidity</span></span> <!--습도-->     
+      </div>
 
-    <div v-if="wind">
-      <p>바람: <span>{{ windDeg }}풍({{ wind.deg }}) {{ wind.speed }}m/s</span></p>
-    </div>
+      <div v-if="wind">
+        <span>{{ windDeg }}풍({{ wind.deg }}) {{ wind.speed }}m/s<span>Wind</span></span> <!--바람-->
+      </div>
 
-    <div v-if="sun">
-      <p>일출: <span>{{ sunriseTime }}</span></p>
-      <p>일몰: <span>{{ sunsetTime }}</span></p>
-    </div>
+      <div v-if="sun">
+        <span>{{ sunriseTime }}<span>Sunrise</span></span> <!--일출-->
+        <span>{{ sunsetTime }}<span>Sunset</span></span> <!--일몰-->
+      </div>
+    </div><!--.weatherInfo-->
 
     
-    <div style="outline:2px solid gray;  padding:20px;">
+    <!-- <div style="outline:2px solid gray;  padding:20px;">
       <p>날씨 전체 데이터</p>
       {{ city }}
-    </div>
-  </div>
+    </div> -->
+  </div><!--.city-->
 </template>
 
 <script>
@@ -146,6 +155,32 @@ export default {
 </script>
 
 <style>
-.city{ outline:3px solid orange; margin-top:30px; padding:40px; }
-span{ font-size:25px; font-weight:bold; }
+.clear:after{ content:''; display:block; clear:both; }
+.city{ outline:px solid orange; margin-top:30px; padding:40px 100px; }
+
+.mainWeather{ outline:px solid red; width:50%; float:left; }
+.mainWeather > .cityname{ outline:px solid red; font-size:45px; font-weight:bold; }
+.mainWeather > .date{ margin:10px 0 50px; font-size:20px; display:block; }
+.mainWeather > div{  height:200px; }
+.mainWeather > div > .iconBox{ outline:px solid lime; width:50%; padding-top:10px; float:left; }
+.mainWeather > div > .iconBox > img{ outline:px solid lime; width:180px; margin:0 0 0 auto; display:block; }
+.mainWeather > div > .textBox{ outline:px solid blue; width:50%; height:100%; padding:40px 0; float:left; }
+.mainWeather > div > .textBox > .temp{ outline:px solid blue; font-size:70px;  }
+.mainWeather > div > .textBox > .weatherText{ outline:px solid blueviolet; margin-left:10px; font-size:20px; display:block;  }
+
+.weatherInfo{ border-radius:10px;  width:calc(50% + -20px);  margin:100px 0 0 20px; background-color:rgba(255, 255, 255, .3); float:left; }
+.weatherInfo span{ width:33.3%; height:100px; padding:26px 0; font-size:20px; text-align:center; float:left; position:relative; } /* 날씨정보 */
+.weatherInfo span > span{  width:100%; height:auto; padding:0; font-size:15px; position:absolute; bottom:26px; left:0; }  /* 날씨정보 타이틀 */
+
+@media screen and (max-width: 900px) {
+  .city{ padding:40px; }
+  .mainWeather{ width:100%; }
+  .weatherInfo{ width:100%; margin:50px 0; }
+}
+
+@media screen and (max-width: 550px) {
+  .mainWeather > div > .iconBox > img{ width:130px; }
+  .mainWeather > div > .textBox > .temp{ font-size:50px; }
+  .weatherInfo{ width:100%; margin:30px 0; }
+}
 </style>

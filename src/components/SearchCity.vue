@@ -1,11 +1,13 @@
 <template>
-  <div>Search City
+  <div class="inputBox">
     <form @submit.prevent="cityName">
       <input
         type="text"
-        placeholder="나라 이름을 입력하세요(영어로)"
+        placeholder="'영어'로 지역명을 입력해 주세요."
         v-model="cityInput"       
-      />
+      >
+      <i class="fas fa-search"></i>
+      </input>
     </form>    
   </div>
 </template>
@@ -54,6 +56,18 @@ export default {
 }
 </script>
 
-<style>
-input{ width:300px; line-height:30px; font-size:20px; }
+<style scoped>
+.inputBox{ outline:px solid red; }
+form{ width:500px; margin:0 auto; position:relative; }
+form > input{ border:none; border-radius:20px; width:100%; line-height:40px;  padding:0 40px 0 55px; font-size:18px; color:#575656; box-shadow:2px 2px 4px rgba(0, 0, 0, .3); }
+form > input:focus{ outline:none; }
+form > i{ font-size:20px; color:rgba(0, 0, 0, .5); position:absolute; left:20px; top:50%; transform:translateY(-50%);  }
+
+@media screen and (max-width: 900px) {
+  form{ width:400px; }
+}
+
+@media screen and (max-width: 500px) {
+  form{ width:350px; }
+}
 </style>
