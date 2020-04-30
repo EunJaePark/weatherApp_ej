@@ -156,17 +156,17 @@ export default {
 
 <style>
 .clear:after{ content:''; display:block; clear:both; }
-.city{ outline:px solid orange; margin-top:30px; padding:40px 100px; }
+.city{ outline:0px solid orange; margin-top:30px; padding:40px 100px; }
 
-.mainWeather{ outline:px solid red; width:50%; float:left; }
-.mainWeather > .cityname{ outline:px solid red; font-size:45px; font-weight:bold; }
+.mainWeather{ outline:0px solid red; width:50%; float:left; }
+.mainWeather > .cityname{ outline:0px solid red; font-size:45px; font-weight:bold; }
 .mainWeather > .date{ margin:10px 0 50px; font-size:20px; display:block; }
 .mainWeather > div{  height:200px; }
-.mainWeather > div > .iconBox{ outline:px solid lime; width:50%; padding-top:10px; float:left; }
-.mainWeather > div > .iconBox > img{ outline:px solid lime; width:180px; margin:0 0 0 auto; display:block; }
-.mainWeather > div > .textBox{ outline:px solid blue; width:50%; height:100%; padding:40px 0; float:left; }
-.mainWeather > div > .textBox > .temp{ outline:px solid blue; font-size:70px;  }
-.mainWeather > div > .textBox > .weatherText{ outline:px solid blueviolet; margin-left:10px; font-size:20px; display:block;  }
+.mainWeather > div > .iconBox{ outline:0px solid lime; width:50%; padding-top:10px; float:left; }
+.mainWeather > div > .iconBox > img{ outline:0px solid lime; width:180px; margin:0 0 0 auto; display:block; }
+.mainWeather > div > .textBox{ outline:0px solid blue; width:50%; height:100%; padding:40px 0; float:left; }
+.mainWeather > div > .textBox > .temp{ outline:0px solid blue; font-size:70px;  }
+.mainWeather > div > .textBox > .weatherText{ outline:0px solid blueviolet; margin-left:10px; font-size:20px; display:block;  }
 
 .weatherInfo{ border-radius:10px;  width:calc(50% + -20px);  margin:100px 0 0 20px; background-color:rgba(255, 255, 255, .3); float:left; }
 .weatherInfo span{ width:33.3%; height:100px; padding:26px 0; font-size:20px; text-align:center; float:left; position:relative; } /* 날씨정보 */
