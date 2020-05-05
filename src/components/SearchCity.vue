@@ -20,12 +20,24 @@ export default {
       cityInput: '',
     }
   },
+  computed: {
+    // firstCity() {
+    //   console.log('처음 로딩때 서울로 되도록 해보자!!');
+    //   const first = 'seoul'
+      
+    //   return this.cityName(first)
+      
+    // }
+    
+  },
   created() {
   },
   methods: {
     cityName() {
-      console.log(`입력한 이름: ${this.cityInput}`)
+      // console.log(city);
       
+      console.log(`입력한 이름: ${this.cityInput}`)
+
       // City.vue로 보내는 이벤트버스함수인 inputName()(main.js에 작성해놓은함수.)으로 전송할 데이터들 넣어줌.
       // true는 City.vue에서 사용할 signal.(지금 코드에서는 없어도 됨.)
       eventbus.inputName(this.cityInput)
