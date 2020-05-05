@@ -26,7 +26,8 @@
       </div>
 
       <div v-if="wind">
-        <span>{{ windDeg }}풍({{ wind.deg }}) {{ wind.speed }}m/s<span>Wind</span></span> <!--바람-->
+        <span>{{ wind.speed }}m/s<span>Wind</span></span> <!--바람-->
+        <!-- <span>{{ windDeg }}풍({{ wind.deg }}) {{ wind.speed }}m/s<span>Wind</span></span> -->
       </div>
 
       <div v-if="sun">
@@ -113,20 +114,20 @@ export default {
       return sunsetTimestr;
     },
 
-    // 풍향: 방위 각도를 한글로 수정.
-    windDeg() {
-      let cardinalPoints = null
-      if(0 <= this.wind.deg < 11.25 || 348.75 <= this.wind.deg < 360) { cardinalPoints = '북' }
-      else if(11.25 <= this.wind.deg < 78.75)  { cardinalPoints = '북동' }
-      else if(78.75 <= this.wind.deg < 123.75)  { cardinalPoints = '동' }
-      else if(123.75 <= this.wind.deg < 146.25)  { cardinalPoints = '남동' }
-      else if(146.25 <= this.wind.deg < 191.25)  { cardinalPoints = '남' }
-      else if(191.25 <= this.wind.deg < 236.25)  { cardinalPoints = '남서' }
-      else if(236.25 <= this.wind.deg < 281.25)  { cardinalPoints = '서' }
-      else if(281.25 <= this.wind.deg < 348.75)  { cardinalPoints = '북서' }
+    // // 풍향: 방위 각도를 한글로 수정.
+    // windDeg() {
+    //   let cardinalPoints = null
+    //   if(0 <= this.wind.deg < 11.25 || 348.75 <= this.wind.deg < 360) { cardinalPoints = '북' }
+    //   else if(11.25 <= this.wind.deg < 78.75)  { cardinalPoints = '북동' }
+    //   else if(78.75 <= this.wind.deg < 123.75)  { cardinalPoints = '동' }
+    //   else if(123.75 <= this.wind.deg < 146.25)  { cardinalPoints = '남동' }
+    //   else if(146.25 <= this.wind.deg < 191.25)  { cardinalPoints = '남' }
+    //   else if(191.25 <= this.wind.deg < 236.25)  { cardinalPoints = '남서' }
+    //   else if(236.25 <= this.wind.deg < 281.25)  { cardinalPoints = '서' }
+    //   else if(281.25 <= this.wind.deg < 348.75)  { cardinalPoints = '북서' }
 
-      return cardinalPoints
-    },
+    //   return cardinalPoints
+    // },
 
     // 5days 시간별 날씨 전체 데이터.
     weather5days() {
@@ -180,7 +181,7 @@ export default {
 
 <style>
 .clear:after{ content:''; display:block; clear:both; }
-.city{ outline:0px solid orange; margin-top:30px; padding:40px 100px; }
+.city{ outline:0px solid orange; min-height:100vh; padding:250px 100px 40px; }
 
 .mainWeather{ outline:0px solid red; width:50%; float:left; }
 .mainWeather > .cityname{ outline:0px solid red; font-size:45px; font-weight:bold; }
@@ -219,14 +220,14 @@ h2{ width:100%; margin:30px 0 15px; font-weight:400; font-size:25px; text-align:
 .weather5dayInfo > ul > li > img{ width:70%; margin:0 auto; display:block; }
 
 @media screen and (max-width: 900px) {
-  .city{ padding:40px; }
+  .city{ padding:150px 40px 40px; }
   .mainWeather{ width:100%; }
-  .weatherInfo{ width:100%; margin:50px 0; }
+  .weatherInfo{ width:100%; margin:50px 0; padding:0 50px; }
 }
 
 @media screen and (max-width: 550px) {
   .mainWeather > div > .iconBox > img{ width:130px; }
   .mainWeather > div > .textBox > .temp{ font-size:50px; }
-  .weatherInfo{ width:100%; margin:30px 0; }
+  .weatherInfo{ width:100%; margin:30px 0; padding: 0 10px; }
 }
 </style>

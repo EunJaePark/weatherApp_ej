@@ -57,17 +57,19 @@ export default {
 </script>
 
 <style scoped>
-.inputBox{ outline:0px solid red; }
+.inputBox{ outline:0px solid red; position:absolute; top:150px; left:50%; transform:translateX(-50%); }
 form{ width:500px; margin:0 auto; position:relative; }
 form > input{ border:none; border-radius:20px; width:100%; line-height:40px;  padding:0 40px 0 55px; font-size:18px; color:#575656; box-shadow:3px 3px 5px rgba(0, 0, 0, .1); }
 form > input:focus{ outline:none; }
 form > i{ font-size:20px; color:rgba(0, 0, 0, .5); position:absolute; left:20px; top:50%; transform:translateY(-50%);  }
 
 @media screen and (max-width: 900px) {
+  .inputBox{ top:100px; }
   form{ width:400px; }
 }
 
 @media screen and (max-width: 500px) {
+  .inputBox{ width:90%; }
   form{ width:350px; }
 }
 </style>
