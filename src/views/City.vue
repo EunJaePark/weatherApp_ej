@@ -35,6 +35,19 @@
       </div>
     </div><!--.weatherInfo-->
 
+    <h2>Forecast</h2>
+    <div class="weather5dayInfo">      
+      <ul>
+        <li v-for="item in date5days">
+          <span>{{ `${new Date(item.dt * 1000).getMonth() + 1 < 10 ? `0${new Date(item.dt * 1000).getMonth() + 1}` : `${new Date(item.dt * 1000).getMonth() + 1}`}.${new Date(item.dt * 1000).getDate() < 10 ? `0${new Date(item.dt * 1000).getDate()}` : `${new Date(item.dt * 1000).getDate()}`}` }} </span>
+          <span>{{ `${new Date(item.dt * 1000).getHours()}:${new Date(item.dt * 1000).getMinutes()}0` }} </span>
+          <!-- <span>{{ item.weather[0].main }}</span> -->
+          <img v-bind:src="`http://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`" />
+          <span>{{ Math.round(item.main.temp) }}℃</span>
+        </li>
+      </ul>
+    </div><!--.weather5dayInfo-->
+
     
     <!-- <div style="outline:2px solid gray;  padding:20px;">
       <p>날씨 전체 데이터</p>
@@ -88,7 +101,7 @@ export default {
       const sunrise = this.sun.sunrise
       console.log(sunrise);
       const sunrisetime = new Date(sunrise * 1000)
-      const sunriseTimestr = sunrisetime.toLocaleTimeString(sunrisetime)
+      const sunriseTimestr = `${(sunrisetime.getHours() % 12) < 10 ? `0${sunrisetime.getHours() % 12}` : `${sunrisetime.getHours() % 12}`}:${sunrisetime.getMinutes() < 10 ? `0${sunrisetime.getMinutes()}` : `${sunrisetime.getMinutes()}`}`
       return sunriseTimestr;
     },
     sunsetTime() {
@@ -96,7 +109,7 @@ export default {
       const sunset = this.sun.sunset
       console.log(sunset);
       const sunsettime = new Date(sunset * 1000)
-      const sunsetTimestr = sunsettime.toLocaleTimeString(sunsettime)
+      const sunsetTimestr = `${(sunsettime.getHours() % 12) < 10 ? `0${sunsettime.getHours() % 12}` : `${sunsettime.getHours() % 12}`}:${sunsettime.getMinutes() < 10 ? `0${sunsettime.getMinutes()}` : `${sunsettime.getMinutes()}`}`
       return sunsetTimestr;
     },
 
@@ -113,7 +126,17 @@ export default {
       else if(281.25 <= this.wind.deg < 348.75)  { cardinalPoints = '북서' }
 
       return cardinalPoints
+    },
+
+    // 5days 시간별 날씨 전체 데이터.
+    weather5days() {
+      return this.$store.state.weather5daysData
+    },
+    // 5days 날짜 + 기온 + icon(id).
+    date5days() {
+      return this.weather5days.list
     }
+
   },
   created() {  
     // 페이지에 새롭게 접속할 경우, 이전에 입력해놓았던 나라가 보이도록 로컬스토리지에서 나라이름 가져옴.
@@ -142,7 +165,8 @@ export default {
     // api주소에 입력한 도시이름 넣어줌.(api의 index.js)
     newCity(cityname) {
       console.log('city name 받았어!!!!!!!!!');
-      this.$store.dispatch('FETCH_WEATHER', cityname)     
+      this.$store.dispatch('FETCH_WEATHER', cityname)    
+      this.$store.dispatch('FETCH_5DAYS', cityname) 
     },
   }
 }
@@ -168,9 +192,31 @@ export default {
 .mainWeather > div > .textBox > .temp{ outline:0px solid blue; font-size:70px;  }
 .mainWeather > div > .textBox > .weatherText{ outline:0px solid blueviolet; margin-left:10px; font-size:20px; display:block;  }
 
-.weatherInfo{ border-radius:10px;  width:calc(50% + -20px);  margin:100px 0 0 20px; background-color:rgba(255, 255, 255, .3); float:left; }
+.weatherInfo{ border-radius:10px;  width:calc(50% + -20px);  margin:100px 0 0 20px; background-color:rgba(255, 255, 255, .2); float:left; }
 .weatherInfo span{ width:33.3%; height:100px; padding:26px 0; font-size:20px; text-align:center; float:left; position:relative; } /* 날씨정보 */
 .weatherInfo span > span{  width:100%; height:auto; padding:0; font-size:15px; position:absolute; bottom:26px; left:0; }  /* 날씨정보 타이틀 */
+
+/* <div class="weather5dayInfo">
+      <ul>
+        <li v-for="item in date5days">
+          <span>{{ `${new Date(item.dt * 1000).getMonth() + 1}.${new Date(item.dt * 1000).getDate()}` }} </span>
+          <span>{{ `${new Date(item.dt * 1000).getHours()}:${new Date(item.dt * 1000).getMinutes()}0` }} </span>
+          <span>{{ Math.round(item.main.temp) }}</span>
+          <span>{{ item.weather[0].main }}</span>
+          <img v-bind:src="`http://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`" />
+        </li>
+      </ul>
+    </div><!--.weather5dayInfo--> */
+
+h2{ width:100%; margin:30px 0 15px; font-weight:400; font-size:25px; text-align:left; display:inline-block; }
+.weather5dayInfo{  width:100%; overflow:scroll; }
+.weather5dayInfo > ul{width:4400px;  }
+.weather5dayInfo > ul:after{ content:''; display:block; clear:both; }
+.weather5dayInfo > ul > li{ border-radius:5px; width:90px; padding:10px; list-style:none; background-color:rgba(255, 255, 255, .2); float:left; }
+.weather5dayInfo > ul > li + li{ margin-left:20px; }
+
+.weather5dayInfo > ul > li > span{ text-align:center; display:block; }
+.weather5dayInfo > ul > li > img{ width:70%; margin:0 auto; display:block; }
 
 @media screen and (max-width: 900px) {
   .city{ padding:40px; }
