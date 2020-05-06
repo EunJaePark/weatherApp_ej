@@ -1,7 +1,7 @@
 <template>
   <div 
     class="city clear"
-    
+    :class="{'light': this.day, 'dark': this.night}"
   ><!-- @cityname = "newCity" v-bind="weatherBG"-->
     <div class="mainWeather">
       <h1 class="cityname">{{ city.name }}</h1>
@@ -66,7 +66,9 @@ export default {
       cityname: '',
       // signal: false,
       minus: 273.15,  // json데이터에서 temp는 Kelvin(절대온도)이므로 273.15를 빼주어야한다. // 켈빈은 절대온도(0을 기전으로 함)에 기반으로 하여 측정되는 온도이며, 'K' 심볼이 사용됩니다. 0K 은 -273.15 °C, 혹은 -459.67 °F 로 변환될 수 있습니다.
-      weatherId: '',
+      // weatherId: '',
+      day: false,
+      night: false
     }
   },
   computed: {
@@ -161,7 +163,8 @@ export default {
     sunriseTime() {
       // unix시간 변환.
       const sunrise = this.sun.sunrise
-      console.log(sunrise);
+      localStorage.setItem('sunrise', sunrise)
+      console.log(`일출시간 : ${sunrise}`);
       const sunrisetime = new Date(sunrise * 1000)
       const sunriseTimestr = `${(sunrisetime.getHours() % 12) < 10 ? `0${sunrisetime.getHours() % 12}` : `${sunrisetime.getHours() % 12}`}:${sunrisetime.getMinutes() < 10 ? `0${sunrisetime.getMinutes()}` : `${sunrisetime.getMinutes()}`}`
       return sunriseTimestr;
@@ -169,10 +172,22 @@ export default {
     sunsetTime() {
       // unix시간 변환.
       const sunset = this.sun.sunset
-      console.log(sunset);
+      localStorage.setItem('sunset', sunset)
+      console.log(`일몰시간 : ${sunset}`);
       const sunsettime = new Date(sunset * 1000)
       const sunsetTimestr = `${(sunsettime.getHours() % 12) < 10 ? `0${sunsettime.getHours() % 12}` : `${sunsettime.getHours() % 12}`}:${sunsettime.getMinutes() < 10 ? `0${sunsettime.getMinutes()}` : `${sunsettime.getMinutes()}`}`
       return sunsetTimestr;
+    },
+
+    // 일출, 일몰 시간에 따른 배경 밝기 조절.
+    sunBG() {
+      const riseTime = this.sun.sunrise
+      const setTime = this.sun.sunset
+      console.log(riseTime, setTime, '아 왜 안되냐***********');
+      
+      sunbg(riseTime, setTime)
+      
+      return sunbe(riseTime, setTime)
     },
 
     // // 풍향: 방위 각도를 한글로 수정.
@@ -204,10 +219,18 @@ export default {
     // 페이지에 새롭게 접속할 경우, 이전에 입력해놓았던 나라가 보이도록 로컬스토리지에서 나라이름 가져옴.
     const localstorageCityName = localStorage.getItem('city_name')
     this.newCity(localstorageCityName)
+
     // 페이지 새로고침시 weather에 따른 배경색 주기위함.
     // const weatherID = localStorage.getItem('weatherID')
     // console.log(weatherID)
     // this.weatherBg(weatherID)
+
+    // 페이지 새로고침시 일출, 일몰에 따른 배경 밝기 조절.
+    const sunriseTime = localStorage.getItem('sunrise')
+    const sunsetTime = localStorage.getItem('sunset')
+    console.log(sunriseTime, sunsetTime);
+    
+    this.sunbg(sunriseTime, sunsetTime)
 
     
 
@@ -284,6 +307,36 @@ export default {
         localStorage.setItem('weather', 'clean')  
         document.querySelector('.city').classList.add('clean')  
       }
+    },
+    sunbg(sunriseTime, sunsetTime) {
+      console.log('일출일몰시간 따라서 배경밝기 조절 함수 실행됨.');
+
+      const timeNow = new Date().getTime() / 1000
+      console.log(`현재시간 : ${timeNow} 일출:${sunriseTime} 일몰:${sunsetTime}`);
+      // console.log(`현재시간 : ${timeNow} 일출:${this.sun.sunrise} 일몰:${this.sun.sunset}`);
+
+
+      if(sunriseTime, sunsetTime) {
+        if(timeNow < sunriseTime ) {
+          console.log('동트기 전!!!!!!!!!!');
+        
+          this.day = false
+          this.night = true
+        }
+        if(sunriseTime < timeNow < sunsetTime && !(timeNow < sunriseTime)) {  // timeNow < sunriseTime가 계속 일출 후랑 겹쳐서 적용되서, 조건을 하나 더 줌.
+          console.log('해 뜸!!!!!!!!!');
+          this.night = false
+          this.day = true
+        } 
+        if( sunsetTime <= timeNow) {
+          console.log('해 짐!!!!!!!!!!!');   
+          this.day = false
+          this.night = true
+        }
+
+        console.log(`day= ${this.day}`);
+        console.log(`night= ${this.night}`);
+      }
     }
   }
 }
@@ -297,6 +350,9 @@ export default {
 
 <style>
 .clear:after{ content:''; display:block; clear:both; }
+/* .light, .dark의 height를 넓이가 변할때마다 바꿔줘야함.!! */
+.light:after{ content:''; display:block; width:100vw; min-height:100vh; background-color:rgba(255, 255, 255, .5); position:absolute; top:0; left:0; }
+.dark:after{ content:''; display:block; width:100vw; min-height:100vh; background-color:rgba(0, 0, 0, .5); position:absolute; top:0; left:0; }
 .thunderstorm{ background-color:darkslategrey; }
 .drizzle{ background-color:yellowgreen; }
 .rain{ background-color:lightcyan; }

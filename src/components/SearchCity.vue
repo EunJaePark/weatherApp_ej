@@ -69,7 +69,7 @@ export default {
 </script>
 
 <style scoped>
-.inputBox{ outline:0px solid red; position:absolute; top:150px; left:50%; transform:translateX(-50%); }
+.inputBox{ outline:0px solid red; position:absolute; top:150px; left:50%; transform:translateX(-50%); z-index:1000; }
 form{ width:500px; margin:0 auto; position:relative; }
 form > input{ border:none; border-radius:20px; width:100%; line-height:40px;  padding:0 40px 0 55px; font-size:18px; color:#575656; box-shadow:3px 3px 5px rgba(0, 0, 0, .1); }
 form > input:focus{ outline:none; }
