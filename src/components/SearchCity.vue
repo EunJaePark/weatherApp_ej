@@ -20,17 +20,11 @@ export default {
       cityInput: '',
     }
   },
-  computed: {
-    // firstCity() {
-    //   console.log('처음 로딩때 서울로 되도록 해보자!!');
-    //   const first = 'seoul'
-      
-    //   return this.cityName(first)
-      
-    // }
-    
-  },
   created() {
+    // 검색한 도시가 없을 경우 'seoul'날씨가 뜨도록 함.
+    if(!localStorage.getItem('city_name')) {
+      localStorage.setItem('city_name', 'seoul');
+    }
   },
   methods: {
     cityName() {
@@ -56,13 +50,11 @@ export default {
       console.log('saveName가 실행됨!!!!');
       
       // local storage에 입력한 도시이름 저장.
-      const CITY_NAME = 'city_name'
       console.log(`로컬에저장할 나라이름: ${city}`);
       
-      localStorage.setItem(CITY_NAME, this.cityInput)
+      localStorage.setItem('city_name', this.cityInput);
       // localStorage.setItem(CITY_NAME, JSON.stringify(this.cityInput))
-    }
-
+    },
   }
 
 }
