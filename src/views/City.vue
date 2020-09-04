@@ -1,20 +1,50 @@
 <template>
   <div 
     class="city clear"
-    :class="{'light': this.day, 'dark': this.night}"
+    :class="[
+      {
+        'thunderstorm-light': weatherStatus === 'thunderstorm' && this.day === true,
+        'drizzle-light': weatherStatus === 'drizzle' && this.day === true,
+        'rain-light': weatherStatus === 'rain' && this.day === true,
+        'snow-light': weatherStatus === 'snow' && this.day === true,
+        'atmosphere-light': weatherStatus === 'atmosphere' && this.day === true,
+        'clouds-light': weatherStatus === 'clouds' && this.day === true,
+        'clean-light': weatherStatus === 'clean' && this.day === true,
+        'thunderstorm-dark': weatherStatus === 'thunderstorm' && this.night === true,
+        'drizzle-dark': weatherStatus === 'drizzle' && this.night === true,
+        'rain-dark': weatherStatus === 'rain' && this.night === true,
+        'snow-dark': weatherStatus === 'snow' && this.night === true,
+        'atmosphere-dark': weatherStatus === 'atmosphere' && this.night === true,
+        'clouds-dark': weatherStatus === 'clouds' && this.night === true,
+        'clean-dark': weatherStatus === 'clean' && this.night === true,
+      },
+      {       
+        'font-white': this.night === true || weatherStatus === 'rain' , 
+        'font-black': this.day === true && weatherStatus !== 'rain'
+      }
+    ]"
   ><!-- @cityname = "newCity" v-bind="weatherBG"-->
+  <!-- <div 
+    class="dayBackgroundcolor"
+    :class="{
+      light: this.day === true, 
+      dark: this.night === true
+    }"
+  >{{ this.day }} {{ this.night }}</div> -->
     <div class="mainWeather">
       <h1 class="cityname">{{ city.name }}</h1>
-      <span class="date">Sunday 30 April</span>
+      <!-- <span class="date">{{ today() }} / {{ city.timezone }}</span>
+      <span class="date">{{ new Date() }}</span> -->
+      <!-- <span class="date">{{ moment.tz("2019-11-12 15:00" , "Asia/Seoul") }}</span> -->
 
       <div v-if="weather" class="clear">
-        <h3>배경에 적용되어야 할 날씨id : ***** {{ weather[0].id }} *****</h3>
+        <h3 class="transparent">배경에 적용되어야 할 날씨id(없애면 안됨 이 h3태그) : ***** {{weatherBG(weather[0].id) }} *****</h3>
         <div class="iconBox">
           <img v-bind:src="`http://openweathermap.org/img/wn/${weather[0].icon}@2x.png`" />
         </div>
         <div class="textBox">
          <span class="temp">{{ temp }}℃</span> <!--평균기온-->
-          <span v-for="item in weather" class="weatherText">{{ item.main }}.  </span> <!--날씨-->
+          <span v-for="item in weather" :key="item.id" class="weatherText">{{ item.main }}.</span> <!--날씨-->
         </div>
       </div>
     </div><!--.mainWeather-->
@@ -40,7 +70,7 @@
     <h2>Forecast</h2>
     <div class="weather5dayInfo">      
       <ul>
-        <li v-for="item in date5days">
+        <li v-for="item in date5days" :key="item.index">
           <span>{{ `${new Date(item.dt * 1000).getMonth() + 1 < 10 ? `0${new Date(item.dt * 1000).getMonth() + 1}` : `${new Date(item.dt * 1000).getMonth() + 1}`}.${new Date(item.dt * 1000).getDate() < 10 ? `0${new Date(item.dt * 1000).getDate()}` : `${new Date(item.dt * 1000).getDate()}`}` }} </span>
           <span>{{ `${new Date(item.dt * 1000).getHours()}:${new Date(item.dt * 1000).getMinutes()}0` }} </span>
           <!-- <span>{{ item.weather[0].main }}</span> -->
@@ -50,7 +80,6 @@
       </ul>
     </div><!--.weather5dayInfo-->
 
-    
     <!-- <div style="outline:2px solid gray;  padding:20px;">
       <p>날씨 전체 데이터</p>
       {{ city }}
@@ -66,16 +95,16 @@ export default {
       cityname: '',
       // signal: false,
       minus: 273.15,  // json데이터에서 temp는 Kelvin(절대온도)이므로 273.15를 빼주어야한다. // 켈빈은 절대온도(0을 기전으로 함)에 기반으로 하여 측정되는 온도이며, 'K' 심볼이 사용됩니다. 0K 은 -273.15 °C, 혹은 -459.67 °F 로 변환될 수 있습니다.
-      // weatherId: '',
+      weatherId: '',
       day: false,
-      night: false
+      night: false,
+      weatherStatus: '',
     }
   },
   computed: {
     // 각 데이터 선언.
     city () {
-      console.log(this.$store.state.weatherData);
-      
+      console.log(this.$store.state.weatherData);     
       return this.$store.state.weatherData
     },
     tempInfo() {
@@ -101,64 +130,6 @@ export default {
     minTemp() {
       return Math.round(this.tempInfo.temp_min - this.minus)
     },
-
-    // 날씨에 따른 배경 체인지.
-    // weatherBG() {  
-    //   localStorage.setItem('weatherID', this.weather[0].id) 
-    //   let id = this.weather[0].id
-    //   console.log(id);
-      
-    //   if(id < 300) {
-    //     console.log('Thunderstorm')    
-    //     localStorage.setItem('weather', 'thunderstorm')     
-    //     let bg = document.querySelector('.city').classList.add('thunderstorm')   
-    //   } else if(id < 400) {
-    //     console.log('Drizzle')   
-    //     localStorage.setItem('weather', 'drizzle')  
-    //     let bg = document.querySelector('.city').classList.add('drizzle') 
-    //   } else if(id < 600) {
-    //     console.log('이건Rain')   
-    //     localStorage.setItem('weather', 'rain')        
-    //     let bg = document.querySelector('.city').classList.add('rain')           
-    //   } else if(id < 700) {
-    //     console.log('Snow')  
-    //     localStorage.setItem('weather', 'snow')  
-    //     let bg = document.querySelector('.city').classList.add('snow')    
-    //   } else if(id < 800) {
-    //     console.log('Atmosphere')  
-    //     localStorage.setItem('weather', 'atmosphere')  
-    //     let bg = document.querySelector('.city').classList.add('atmosphere')         
-    //   } else if(id >= 801) {
-    //     console.log('Clouds')  
-    //     localStorage.setItem('weather', 'clouds')    
-    //     let bg = document.querySelector('.city').classList.add('clouds')     
-    //   } else if(id = 800) {
-    //     console.log('Clean') 
-    //     localStorage.setItem('weather', 'clean')  
-    //     let bg = document.querySelector('.city').classList.add('clean')  
-    //   }
-    //   return this.weatherBg(id)       
-    // },
-
-
-    // weatherID() {
-    //   console.log('왜 weather의 length랑 [0]이랑 다 안되는거야....ㅠㅠ');
-      
-    //   console.log(this.weather)
-      
-    //   for(let i = 0; i < this.weather.length; i++) {
-    //     return this.weather[i].id
-    //   }
-    // },
-    // 날씨에 따른 배경 체인지.
-    weatherBG() {  
-      localStorage.setItem('weatherID', this.weatherID) 
-      this.weatherId = this.weatherID
-      console.log(`this.weatherId: ${this.weatherId}`);
-      
-      return this.weatherBg(this.weatherId)     
-    },
-
     //일출,일몰시간: 유닉스 시간을 표준시간으로 변경.
     sunriseTime() {
       // unix시간 변환.
@@ -166,7 +137,13 @@ export default {
       localStorage.setItem('sunrise', sunrise)
       console.log(`일출시간 : ${sunrise}`);
       const sunrisetime = new Date(sunrise * 1000)
+      console.log(`일출시간 : ${sunrisetime}`);
       const sunriseTimestr = `${(sunrisetime.getHours() % 12) < 10 ? `0${sunrisetime.getHours() % 12}` : `${sunrisetime.getHours() % 12}`}:${sunrisetime.getMinutes() < 10 ? `0${sunrisetime.getMinutes()}` : `${sunrisetime.getMinutes()}`}`
+      console.log(`일출시간 : ${sunriseTimestr}`);
+
+      // 일출/일몰 시간 이용해서 배경 밝기 조절하는 함수 실행시켜주기.
+      this.sunBG();
+
       return sunriseTimestr;
     },
     sunsetTime() {
@@ -179,16 +156,16 @@ export default {
       return sunsetTimestr;
     },
 
-    // 일출, 일몰 시간에 따른 배경 밝기 조절.
-    sunBG() {
-      const riseTime = this.sun.sunrise
-      const setTime = this.sun.sunset
-      console.log(riseTime, setTime, '아 왜 안되냐***********');
+    // // 일출, 일몰 시간에 따른 배경 밝기 조절.
+    // sunBG() {
+    //   const riseTime = this.sun.sunrise
+    //   const setTime = this.sun.sunset
+    //   console.log(riseTime, setTime, '아 왜 안되냐***********');
       
-      sunbg(riseTime, setTime)
+    //   this.sunbg(riseTime, setTime)
       
-      return sunbe(riseTime, setTime)
-    },
+    //   return sunbe(riseTime, setTime)
+    // },
 
     // // 풍향: 방위 각도를 한글로 수정.
     // windDeg() {
@@ -221,9 +198,10 @@ export default {
     this.newCity(localstorageCityName)
 
     // 페이지 새로고침시 weather에 따른 배경색 주기위함.
-    // const weatherID = localStorage.getItem('weatherID')
+    console.log(localStorage.getItem('weatherID'));
+    const weatherID = localStorage.getItem('weatherID')
     // console.log(weatherID)
-    // this.weatherBg(weatherID)
+    this.weatherBg(weatherID)
 
     // 페이지 새로고침시 일출, 일몰에 따른 배경 밝기 조절.
     const sunriseTime = localStorage.getItem('sunrise')
@@ -269,6 +247,17 @@ export default {
       this.$store.dispatch('FETCH_5DAYS', cityname) 
     },
 
+    // 날씨에 따른 배경 체인지.
+    weatherBG(weatherID) {  
+      localStorage.setItem('weatherID', weatherID); 
+      this.weatherId = weatherID;
+      console.log(`this.weatherId: ${this.weatherId}`);
+
+      this.weatherBg(this.weatherId); 
+      console.log(this.weatherId);
+      
+      return weatherID;    
+    },
     weatherBg(id) {
       // const bg = this.weather[0].id
       // console.log(bg);
@@ -276,37 +265,54 @@ export default {
       console.log(id); //console에 null로 뜨네...?
       // id = this.weather[0].id
       console.log(`이걸로 날씨id가 적용되는건데.....!화면에 뜬 숫자랑 같은가.....${id}`);
-      console.log(this);
+      // console.log(this);
       
       if(id < 300) {
-        console.log('Thunderstorm')    
-        localStorage.setItem('weather', 'thunderstorm')     
-        document.querySelector('.city').classList.add('thunderstorm')   
+        console.log('Thunderstorm');    
+        localStorage.setItem('weather', 'thunderstorm');
+        this.weatherStatus = 'thunderstorm';     
+        // document.querySelector('.city').classList.add('thunderstorm')   
       } else if(id < 400) {
-        console.log('Drizzle')   
-        localStorage.setItem('weather', 'drizzle')  
-        document.querySelector('.city').classList.add('drizzle') 
+        console.log('Drizzle');   
+        localStorage.setItem('weather', 'drizzle');
+        this.weatherStatus = 'drizzle';  
+        // document.querySelector('.city').classList.add('drizzle') 
       } else if(id < 600) {
-        console.log('이건Rain')   
-        localStorage.setItem('weather', 'rain')        
-        document.querySelector('.city').classList.add('rain')           
+        console.log('이건Rain');   
+        localStorage.setItem('weather', 'rain');  
+        this.weatherStatus = 'rain';      
+        // document.querySelector('.city').classList.add('rain')           
       } else if(id < 700) {
-        console.log('Snow')  
-        localStorage.setItem('weather', 'snow')  
-        document.querySelector('.city').classList.add('snow')    
+        console.log('Snow');
+        localStorage.setItem('weather', 'snow'); 
+        this.weatherStatus = 'snow';
+        // document.querySelector('.city').classList.add('snow')    
       } else if(id < 800) {
-        console.log('Atmosphere')  
-        localStorage.setItem('weather', 'atmosphere')  
-        document.querySelector('.city').classList.add('atmosphere')         
+        console.log('Atmosphere');  
+        localStorage.setItem('weather', 'atmosphere');  
+        this.weatherStatus = 'atmosphere';
+        // document.querySelector('.city').classList.add('atmosphere')         
       } else if(id >= 801) {
         console.log('Clouds')  
-        localStorage.setItem('weather', 'clouds')    
-        document.querySelector('.city').classList.add('clouds')     
+        localStorage.setItem('weather', 'clouds');    
+        this.weatherStatus = 'clouds';
+        console.log(this.weatherStatus);
+        // document.querySelector('.city').classList.add('clouds')     
       } else if(id = 800) {
-        console.log('Clean') 
-        localStorage.setItem('weather', 'clean')  
-        document.querySelector('.city').classList.add('clean')  
+        console.log('Clean'); 
+        localStorage.setItem('weather', 'clean');  
+        this.weatherStatus = 'clean';
+        // document.querySelector('.city').classList.add('clean')  
       }
+    },
+
+    // 일출, 일몰 시간에 따른 배경 밝기 조절.
+    sunBG() {
+      const riseTime = this.sun.sunrise
+      const setTime = this.sun.sunset
+      console.log(riseTime, setTime, '아 왜 안되냐*********** 된다!!!!');
+      
+      this.sunbg(riseTime, setTime)
     },
     sunbg(sunriseTime, sunsetTime) {
       console.log('일출일몰시간 따라서 배경밝기 조절 함수 실행됨.');
@@ -314,7 +320,6 @@ export default {
       const timeNow = new Date().getTime() / 1000
       console.log(`현재시간 : ${timeNow} 일출:${sunriseTime} 일몰:${sunsetTime}`);
       // console.log(`현재시간 : ${timeNow} 일출:${this.sun.sunrise} 일몰:${this.sun.sunset}`);
-
 
       if(sunriseTime, sunsetTime) {
         if(timeNow < sunriseTime ) {
@@ -337,7 +342,10 @@ export default {
         console.log(`day= ${this.day}`);
         console.log(`night= ${this.night}`);
       }
-    }
+    },
+    today() {
+      return new Date().valueOf();
+    },
   }
 }
 
@@ -350,30 +358,44 @@ export default {
 
 <style>
 .clear:after{ content:''; display:block; clear:both; }
+.transparent{ opacity: 0; display: none; }
 /* .light, .dark의 height를 넓이가 변할때마다 바꿔줘야함.!! */
-.light:after{ content:''; display:block; width:100vw; min-height:100vh; background-color:rgba(255, 255, 255, .5); position:absolute; top:0; left:0; }
-.dark:after{ content:''; display:block; width:100vw; min-height:100vh; background-color:rgba(0, 0, 0, .5); position:absolute; top:0; left:0; }
-.thunderstorm{ background-color:darkslategrey; }
-.drizzle{ background-color:yellowgreen; }
-.rain{ background-color:lightcyan; }
-.snow{ background-color:burlywood; }
-.atmosphere{ background-color:blue; }
-.clean{ background-color:skyblue; }
-.clouds{ background-color:darkgrey; }
+.light{ border:3px solid yellow; content:''; display:block; width:100vw; min-height:100vh; background-color:rgba(255, 255, 255, .5); /*position:fixed; top:0; left:0;*/ }
+.dark{ border:3px solid blue; content:''; display:block; width:100vw; min-height:100vh; background-color:rgba(0, 0, 0, .5); background-blend-mode: multiply; /*position:fixed; top:0; left:0;*/ }
+.font-white{ color: #fff; }
+.font-black{ color: #353434; }
+/* --- light ver. --- */
+.thunderstorm-light{ background:url('../assets/imgs/thunderstorm.png') no-repeat center center; background-size: cover; background-color:rgba(255, 255, 255, 1); background-blend-mode: multiply; }
+.drizzle-light{ background:url('../assets/imgs/drizzle.png') no-repeat center center; background-size: cover; background-color:rgba(255, 255, 255, 1); background-blend-mode: multiply; }
+.rain-light{ background:url('../assets/imgs/rain.png') no-repeat center center; background-size: cover; background-color:rgba(255, 255, 255, 1); background-blend-mode: multiply; }
+.snow-light{ background:url('../assets/imgs/snow.png') no-repeat center center; background-size: cover; background-color:rgba(255, 255, 255, 1); background-blend-mode: multiply; }
+.atmosphere-light{ background:url('../assets/imgs/atmosphere.png') no-repeat center center; background-size: cover; background-color:rgba(255, 255, 255, 1); background-blend-mode: multiply; }
+.clean-light{ background:url('../assets/imgs/clean.png') no-repeat center center; background-size: cover; background-color:rgba(255, 255, 255, 1); background-blend-mode: multiply; }
+.clouds-light{ background:url('../assets/imgs/clouds.png') no-repeat center center; background-size: cover; background-color:rgba(255, 255, 255, 1); background-blend-mode: multiply; }
+/* --- dark ver. --- */
+.thunderstorm-dark{ background:url('../assets/imgs/thunderstorm.png') no-repeat center center; background-size: cover; background-color:rgba(0, 0, 0, .7); background-blend-mode: multiply; }
+.drizzle-dark{ background:url('../assets/imgs/drizzle.png') no-repeat center center; background-size: cover; background-color:rgba(0, 0, 0, .7); background-blend-mode: multiply; }
+.rain-dark{ background:url('../assets/imgs/rain.png') no-repeat center center; background-size: cover; background-color:rgba(0, 0, 0, .7); background-blend-mode: multiply; }
+.snow-dark{ background:url('../assets/imgs/snow.png') no-repeat center center; background-size: cover; background-color:rgba(0, 0, 0, .7); background-blend-mode: multiply; }
+.atmosphere-dark{ background:url('../assets/imgs/atmosphere.png') no-repeat center center; background-size: cover; background-color:rgba(0, 0, 0, .7); background-blend-mode: multiply; }
+.clean-dark{ background:url('../assets/imgs/clean.png') no-repeat center center; background-size: cover; background-color:rgba(0, 0, 0, .7); background-blend-mode: multiply; }
+.clouds-dark{ background:url('../assets/imgs/clouds.png') no-repeat center center; background-size: cover; background-color:rgba(0, 0, 0, .7); background-blend-mode: multiply; }
 
-.city{ outline:0px solid orange; min-height:100vh; padding:250px 100px 40px; }
 
-.mainWeather{ outline:0px solid red; width:50%; float:left; }
+.city{ outline:0px solid orange; min-height:100vh; padding:250px 100px 40px;  }
+.dayBackgroundcolor{ width: 100vw; height: 100vh; position: fixed; top: 0; left: 0;  }
+
+.mainWeather{ outline:0px solid red; width:50%; float:left; z-index: 100; }
 .mainWeather > .cityname{ outline:0px solid red; font-size:45px; font-weight:bold; }
 .mainWeather > .date{ margin:10px 0 50px; font-size:20px; display:block; }
-.mainWeather > div{  height:200px; }
+.mainWeather > div{  height:200px; margin-top: 40px; }
 .mainWeather > div > .iconBox{ outline:0px solid lime; width:50%; padding-top:10px; float:left; }
 .mainWeather > div > .iconBox > img{ outline:0px solid lime; width:180px; margin:0 0 0 auto; display:block; }
 .mainWeather > div > .textBox{ outline:0px solid blue; width:50%; height:100%; padding:40px 0; float:left; }
 .mainWeather > div > .textBox > .temp{ outline:0px solid blue; font-size:70px;  }
 .mainWeather > div > .textBox > .weatherText{ outline:0px solid blueviolet; margin-left:10px; font-size:20px; display:block;  }
 
-.weatherInfo{ border-radius:10px;  width:calc(50% + -20px);  margin:100px 0 0 20px; background-color:rgba(255, 255, 255, .2); float:left; }
+.weatherInfo{ border-radius:10px;  width:calc(50% + -20px);  margin:100px 0 0 20px; background-color:rgba(255, 255, 255, .2); float:left;  }
 .weatherInfo span{ width:33.3%; height:100px; padding:26px 0; font-size:20px; text-align:center; float:left; position:relative; } /* 날씨정보 */
 .weatherInfo span > span{  width:100%; height:auto; padding:0; font-size:15px; position:absolute; bottom:26px; left:0; }  /* 날씨정보 타이틀 */
 
@@ -389,7 +411,7 @@ export default {
       </ul>
     </div><!--.weather5dayInfo--> */
 
-h2{ width:100%; margin:30px 0 15px; font-weight:400; font-size:25px; text-align:left; display:inline-block; }
+h2{ width:100%; margin:80px 0 15px; font-weight:400; font-size:25px; text-align:left; display:inline-block; }
 .weather5dayInfo{  width:100%; overflow:scroll; }
 .weather5dayInfo > ul{width:4400px;  }
 .weather5dayInfo > ul:after{ content:''; display:block; clear:both; }
@@ -400,7 +422,7 @@ h2{ width:100%; margin:30px 0 15px; font-weight:400; font-size:25px; text-align:
 .weather5dayInfo > ul > li > img{ width:70%; margin:0 auto; display:block; }
 
 @media screen and (max-width: 900px) {
-  .city{ padding:150px 40px 40px; }
+  .city{ padding:180px 40px 40px; }
   .mainWeather{ width:100%; }
   .weatherInfo{ width:100%; margin:50px 0; padding:0 50px; }
 }
@@ -409,5 +431,6 @@ h2{ width:100%; margin:30px 0 15px; font-weight:400; font-size:25px; text-align:
   .mainWeather > div > .iconBox > img{ width:130px; }
   .mainWeather > div > .textBox > .temp{ font-size:50px; }
   .weatherInfo{ width:100%; margin:30px 0; padding: 0 10px; }
+  h2{ margin:30px 0 15px; }
 }
 </style>

@@ -40,7 +40,7 @@ export default {
 
       // City.vue로 보내는 이벤트버스함수인 inputName()(main.js에 작성해놓은함수.)으로 전송할 데이터들 넣어줌.
       // true는 City.vue에서 사용할 signal.(지금 코드에서는 없어도 됨.)
-      eventbus.inputName(this.cityInput)
+      eventbus.inputName(this.cityInput) 
       // eventbus.inputName(this.cityInput, true)
 
       // local storage에 입력한 도시이름 저장하는 함수 실행.
