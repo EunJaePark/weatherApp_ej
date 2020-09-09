@@ -32,7 +32,10 @@
     }"
   >{{ this.day }} {{ this.night }}</div> -->
     <div class="mainWeather">
-      <h1 class="cityname">{{ city.name }}</h1>
+      <h1 class="cityname">
+        <i class="fas fa-map-marker-alt"></i>
+        <span>{{ city.name }}</span>
+      </h1>
       <!-- <span class="date">{{ today() }} / {{ city.timezone }}</span>
       <span class="date">{{ new Date() }}</span> -->
       <!-- <span class="date">{{ moment.tz("2019-11-12 15:00" , "Asia/Seoul") }}</span> -->
@@ -386,7 +389,8 @@ export default {
 .dayBackgroundcolor{ width: 100vw; height: 100vh; position: fixed; top: 0; left: 0;  }
 
 .mainWeather{ outline:0px solid red; width:50%; float:left; z-index: 100; }
-.mainWeather > .cityname{ outline:0px solid red; font-size:45px; font-weight:bold; }
+.mainWeather > .cityname > i{  margin-right: 20px; font-size: 40px; display:inline-block; }
+.mainWeather > .cityname > span{ font-size:45px; font-weight:bold; }
 .mainWeather > .date{ margin:10px 0 50px; font-size:20px; display:block; }
 .mainWeather > div{  height:200px; margin-top: 40px; }
 .mainWeather > div > .iconBox{ outline:0px solid lime; width:50%; padding-top:10px; float:left; }
