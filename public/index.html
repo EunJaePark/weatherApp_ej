@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
+  <head profile="http://www.w3.org/2005/10/profile">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -8,11 +8,16 @@
     <title>Weather App</title>
     <!-- <title><%= htmlWebpackPlugin.options.title %></title> -->
 
+    <!-- Failed to load resource: the server responded with a status of 404 () 에러 안뜨게 하기용. -->
+    <link rel="icon" type="image/png" href="http://example.com/myicon.png">
+
+
     <script src="https://kit.fontawesome.com/aa7a88800a.js" crossorigin="anonymous"></script>
 
     <!-- moment(세계시간) 라이브러리 -->
     <script src="./moment.js"></script>
     <script src="./moment-timezone-with-data.js"></script> 
+    
 
     <style>
       @import url('https://fonts.googleapis.com/css?family=Muli:400,700&display=swap');
