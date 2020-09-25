@@ -236,11 +236,7 @@ export default {
         this.weatherBg(weatherid)
       }
       
-    }) 
-    
-
-    
-        
+    })   
   },
   methods: {
     // api주소에 입력한 도시이름 넣어줌.(api의 index.js)

@@ -18,13 +18,20 @@ export default {
   data() {
     return {
       cityInput: '',
+      location: {
+        lat: '',
+        lon: '',
+      },
     }
   },
   created() {
+    console.log(localStorage.getItem('city_name'));
     // 검색한 도시가 없을 경우 'seoul'날씨가 뜨도록 함.
-    if(!localStorage.getItem('city_name')) {
+    if(localStorage.getItem('city_name') === '') {
       localStorage.setItem('city_name', 'seoul');
     }
+
+    // this.cityLocation();
   },
   methods: {
     cityName() {
@@ -55,6 +62,19 @@ export default {
       localStorage.setItem('city_name', this.cityInput);
       // localStorage.setItem(CITY_NAME, JSON.stringify(this.cityInput))
     },
+
+    // cityLocation() {
+    //   if(navigator.geolocation) {
+    //     navigator.geolocation.getCurrentPosition(function(position) {
+    //       let pos = {
+    //         lat: position.coords.latitude,
+    //         lon: position.coords.longitude
+    //       };
+    //       alert(`현재 위치는 ${pos.lat}, ${pos.lon}`);
+    //     });
+    //   }
+      
+    // },
   }
 
 }
