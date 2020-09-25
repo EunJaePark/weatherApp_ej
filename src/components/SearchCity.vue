@@ -7,7 +7,7 @@
         v-model="cityInput"       
       >
       <i class="fas fa-search"></i>
-      </input>
+      <!-- </input> -->
     </form>    
   </div>
 </template>
@@ -60,7 +60,6 @@ export default {
       console.log(`로컬에저장할 나라이름: ${city}`);
       
       localStorage.setItem('city_name', this.cityInput);
-      // localStorage.setItem(CITY_NAME, JSON.stringify(this.cityInput))
     },
 
     // cityLocation() {

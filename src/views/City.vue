@@ -213,18 +213,10 @@ export default {
     
     this.sunbg(sunriseTime, sunsetTime)
 
-    
 
     // SearchCity.vue에서 input에 입력한 나라이름 가져와서 새롭게 나라날씨 데이터 가져옴.
-    // eventbus.$on('sendCityName', (cityInput, signal) => {
     eventbus.$on('sendCityName', (cityInput) => {
       console.log(cityInput)
-      // console.log(signal);     
-
-      // 나라 이름이 맞을 경우 날씨데이터 보여주고, 이름 틀릴경우 알림창 뜨도록하기.(아직 미완성) 
-      // if(signal === true) {
-        // this.newCity(cityInput)
-      // }    
 
       if(cityInput) {
         this.newCity(cityInput)
@@ -258,9 +250,6 @@ export default {
       return weatherID;    
     },
     weatherBg(id) {
-      // const bg = this.weather[0].id
-      // console.log(bg);
-      // const entireBG = null
       console.log(id); //console에 null로 뜨네...?
       // id = this.weather[0].id
       console.log(`이걸로 날씨id가 적용되는건데.....!화면에 뜬 숫자랑 같은가.....${id}`);

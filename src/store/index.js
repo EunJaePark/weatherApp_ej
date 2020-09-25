@@ -22,13 +22,19 @@ export default new Vuex.Store({ //const로 선언하는 것과 차이....?
   },
   actions: {
     FETCH_WEATHER(context, cityname) {
+      // 직전에 검색했던 도시명 불러와 변수 선언.
+      let savedCity = localStorage.getItem('city_name');
       return weatherCity(cityname)
       .then(res => {
-        context.commit('SET_CITY', res.data) 
+        context.commit('SET_CITY', res.data);
         return res;
       })
       .catch(err => {
-        console.log(err)   
+        console.log(`직전에 검색했던 도시: ${savedCity}`);
+        // 도시명이 올바르지 않을 경우 알림창 띄움.
+        alert('검색 지역을 올바르게 입력해 주세요.');
+        // 도시명이 올바르지 않을 경우, 직전에 검색했던 도시명을 다시 사용.
+        localStorage.setItem('city_name', savedCity);
       })
     },
     FETCH_5DAYS(context, cityname) {
