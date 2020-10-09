@@ -25,18 +25,18 @@ export default {
 </script>
 
 <style>
-.popup{ border-radius: 50px; width: 400px; height: 60px; background-color: rgba(53, 52, 52, .8); position: absolute; left: 50%; top: 50px; transform: translateX(-50%); transition: all .8s ease; z-index: 2000; }
-.popup > p{ margin-top: 18px; font-size: 20px; text-align: center; }
-.hide{ top: -100px; }
+.popup{ border-radius: 50px; width: 400px; padding: 15px 0; background-color: rgba(53, 52, 52, .8); position: absolute; left: 50%; top: 50px; transform: translateX(-50%); transition: all .8s ease; z-index: 2000; }
+.popup > p{ font-size: 20px; text-align: center; }
+.hide{ top: -60px; }
 
 @media screen and (max-width: 900px) {
-    .popup{ top: 30px; }
-    .hide{ top: -120px; }
+    .popup{ width: 350px; top: 30px; }
+    .popup > p{ font-size: 18px; }
+    .hide{ top: -60px; }
 }
 
 @media screen and (max-width: 550px) {
-    .popup{ width: 330px; }
-    .popup > p{ font-size: 18px; }
-    .hide{ top: -120px; }
+    .popup{ width: 300px; }
+    .popup > p{ font-size: 16px; }
 }
 </style>
