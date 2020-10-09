@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { weatherCity, /*weatherIcon,*/ weather5days } from '../api/index'
+import { eventbus } from '../main.js';
 
 Vue.use(Vuex)
 
@@ -32,7 +33,11 @@ export default new Vuex.Store({ //const로 선언하는 것과 차이....?
       .catch(err => {
         console.log(`직전에 검색했던 도시: ${savedCity}`);
         // 도시명이 올바르지 않을 경우 알림창 띄움.
-        alert('검색 지역을 올바르게 입력해 주세요.');
+        const sendMessage = {
+          message: '검색 지역을 올바르게 입력해 주세요.',
+          error: true,
+        };
+        eventbus.alertMessage(sendMessage);
         // 도시명이 올바르지 않을 경우, 직전에 검색했던 도시명을 다시 사용.
         localStorage.setItem('city_name', savedCity);
       })

@@ -23,22 +23,12 @@
         'font-black': this.day === true && weatherStatus !== 'rain'
       }
     ]"
-  ><!-- @cityname = "newCity" v-bind="weatherBG"-->
-  <!-- <div 
-    class="dayBackgroundcolor"
-    :class="{
-      light: this.day === true, 
-      dark: this.night === true
-    }"
-  >{{ this.day }} {{ this.night }}</div> -->
+  >
     <div class="mainWeather">
       <h1 class="cityname">
         <i class="fas fa-map-marker-alt"></i>
         <span>{{ city.name }}</span>
       </h1>
-      <!-- <span class="date">{{ today() }} / {{ city.timezone }}</span>
-      <span class="date">{{ new Date() }}</span> -->
-      <!-- <span class="date">{{ moment.tz("2019-11-12 15:00" , "Asia/Seoul") }}</span> -->
 
       <div v-if="weather" class="clear">
         <h3 class="transparent">배경에 적용되어야 할 날씨id(없애면 안됨 이 h3태그) : ***** {{weatherBG(weather[0].id) }} *****</h3>
@@ -195,7 +185,7 @@ export default {
     }
 
   },
-  created() {  
+  created() { 
     // 페이지에 새롭게 접속할 경우, 이전에 입력해놓았던 나라가 보이도록 로컬스토리지에서 나라이름 가져옴.
     const localstorageCityName = localStorage.getItem('city_name')
     this.newCity(localstorageCityName)
@@ -371,6 +361,7 @@ export default {
 
 
 .city{ outline:0px solid orange; min-height:100vh; padding:250px 100px 40px;  }
+.firstConnect{ display: none; }
 .dayBackgroundcolor{ width: 100vw; height: 100vh; position: fixed; top: 0; left: 0;  }
 
 .mainWeather{ outline:0px solid red; width:50%; float:left; z-index: 100; }
@@ -388,17 +379,6 @@ export default {
 .weatherInfo span{ width:33.3%; height:100px; padding:26px 0; font-size:20px; text-align:center; float:left; position:relative; } /* 날씨정보 */
 .weatherInfo span > span{  width:100%; height:auto; padding:0; font-size:15px; position:absolute; bottom:26px; left:0; }  /* 날씨정보 타이틀 */
 
-/* <div class="weather5dayInfo">
-      <ul>
-        <li v-for="item in date5days">
-          <span>{{ `${new Date(item.dt * 1000).getMonth() + 1}.${new Date(item.dt * 1000).getDate()}` }} </span>
-          <span>{{ `${new Date(item.dt * 1000).getHours()}:${new Date(item.dt * 1000).getMinutes()}0` }} </span>
-          <span>{{ Math.round(item.main.temp) }}</span>
-          <span>{{ item.weather[0].main }}</span>
-          <img v-bind:src="`http://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`" />
-        </li>
-      </ul>
-    </div><!--.weather5dayInfo--> */
 
 h2{ width:100%; margin:80px 0 15px; font-weight:400; font-size:25px; text-align:left; display:inline-block; }
 .weather5dayInfo{  width:100%; overflow:scroll; }
