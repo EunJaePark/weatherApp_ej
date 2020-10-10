@@ -6,7 +6,9 @@
         placeholder="'영어'로 지역명을 입력해 주세요."
         v-model="cityInput"       
       >
-      <i class="fas fa-search"></i>
+      <button>
+        <i class="fas fa-search"></i>
+      </button>
     </form>    
   </div>
 </template>
@@ -62,7 +64,10 @@ export default {
 form{ width:500px; margin:0 auto; position: relative; }
 form > input{ border:none; border-radius:20px; width:100%; line-height:40px;  padding:0 40px 0 55px; font-size:18px; color:#575656; box-shadow:3px 3px 5px rgba(0, 0, 0, .1); }
 form > input:focus{ outline:none; }
-form > i{ font-size:20px; color:rgba(0, 0, 0, .5); position:absolute; left:20px; top:50%; transform:translateY(-50%);  }
+form > button{ border: none; background-color: transparent; cursor: pointer; position:absolute; left:20px; top:50%; transform:translateY(-50%);  }
+form > button:focus{ outline: none; }
+form > button > i{ font-size:20px; color:rgba(0, 0, 0, .5); }
+form > button:hover > i{ color:rgba(0, 0, 0, .7); }
 
 
 @media screen and (max-width: 900px) {

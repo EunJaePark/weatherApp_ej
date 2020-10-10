@@ -17,7 +17,7 @@ export default {
             this.error = cont.error;
             setTimeout(() => {
                 this.error = false;
-            }, 1500);
+            }, 1800);
             }
         );
     },
@@ -25,7 +25,7 @@ export default {
 </script>
 
 <style>
-.popup{ border-radius: 50px; width: 400px; padding: 15px 0; background-color: rgba(53, 52, 52, .8); position: absolute; left: 50%; top: 50px; transform: translateX(-50%); transition: all .8s ease; z-index: 2000; }
+.popup{ border-radius: 50px; width: 400px; padding: 15px 0; background-color: rgba(53, 52, 52, .8); position: absolute; left: 50%; top: 50px; transform: translateX(-50%); transition: all .6s ease; z-index: 2000; }
 .popup > p{ font-size: 20px; text-align: center; }
 .hide{ top: -60px; }
 
